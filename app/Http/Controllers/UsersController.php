@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
+
 use App\Models\User;
 use Mail;
 
@@ -28,7 +29,10 @@ class UsersController extends Controller
 
     public function show(User $user)
     {
-        return view('users.show', compact('user'));
+        $statuses = $user->statuses()
+            ->orderBy('created_at','desc')
+            ->paginate(30);
+        return view('users.show', compact('user','statuses'));
     }
 
     public function store(Request $request)
